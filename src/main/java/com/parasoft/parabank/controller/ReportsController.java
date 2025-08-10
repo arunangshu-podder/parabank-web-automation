@@ -134,6 +134,18 @@ public class ReportsController {
     }
 
     /**
+     * Marks the test as failed and attaches a screenshot.
+     *
+     * @param message Message to log
+     */
+    public static void skipTest(String message) {
+        ExtentTest test = getTest();
+        if (test != null) {
+            test.skip(message);
+        }
+    }
+
+    /**
      * Flushes the report to disk.
      */
     public static void buildReport() {

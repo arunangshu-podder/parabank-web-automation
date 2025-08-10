@@ -15,4 +15,8 @@ public class Constants {
     public static final int PAGELOAD_WAIT = Integer.parseInt(Config.getProperty("wait.pageload"));
 
     public static final String DATA = "data";
+
+    public static final String RELEASE_VERSION = Config.getProperty("release.version");
+
+    public static boolean ANALYTICS_ENABLED = Boolean.parseBoolean(Config.getProperty("enable.analytics"));
 }

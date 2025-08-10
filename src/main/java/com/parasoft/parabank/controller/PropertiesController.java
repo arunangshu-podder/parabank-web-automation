@@ -26,4 +26,16 @@ public class PropertiesController {
             throw e;
         }
     }
+
+    public static Properties getAnalyticsDBDetails() throws IOException {
+        try (FileInputStream fis = new FileInputStream("./AnalyticsDB.properties")) {
+            Properties analyticsConfig = new Properties();
+            analyticsConfig.load(fis);
+            return analyticsConfig;
+        } catch (IOException e) {
+            // Log the error and rethrow for upstream handling
+            LogController.error("Failed to load configuration properties: " + e.getMessage());
+            throw e;
+        }
+    }
 }
