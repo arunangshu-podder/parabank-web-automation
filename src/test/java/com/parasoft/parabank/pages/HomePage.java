@@ -1,5 +1,6 @@
 package com.parasoft.parabank.pages;
 
+import com.parasoft.parabank.data.RequestLoanDataObject;
 import com.parasoft.parabank.data.TransferFundsDataObject;
 import org.openqa.selenium.By;
 
@@ -11,6 +12,8 @@ public class HomePage extends GenericActions {
     By transactionTable = By.cssSelector("table#transactionTable");
     By debitAmount = By.xpath("//a[text()='Funds Transfer Sent']//parent::td//following-sibling::td[1]");
     By creditAmount = By.xpath("//a[text()='Funds Transfer Received']//parent::td//following-sibling::td[2]");
+    By loanAmount = By.id("amount");
+    By downPayment = By.id("downPayment");
 
 
     public void verifyWelcomeMessageDisplayed() throws Exception {
@@ -53,5 +56,15 @@ public class HomePage extends GenericActions {
                     "Actual debit amount %s and credit amount %s.",
                     object.AMOUNT, object.AMOUNT, actualDebitAmount, actualCreditAmount));
         }
+    }
+
+    public void enterLoanDetails(RequestLoanDataObject object) throws Exception {
+        validateVisibilityOfElement(loanAmount, "Loan Amount field not displayed.");
+        enterText(loanAmount, object.LOAN_AMOUNT, "Failed to enter amount in Loan Amount field.");
+
+        validateVisibilityOfElement(downPayment, "Down Payment field not displayed.");
+        enterText(downPayment, object.DOWN_PAYMENT, "Failed to enter amount in Down Payment field.");
+
+        executeSteps();
     }
 }

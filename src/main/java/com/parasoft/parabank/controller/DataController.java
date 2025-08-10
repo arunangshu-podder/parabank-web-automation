@@ -4,6 +4,7 @@ import com.codoid.products.exception.FilloException;
 import com.codoid.products.fillo.Connection;
 import com.codoid.products.fillo.Fillo;
 import com.codoid.products.fillo.Recordset;
+import com.parasoft.parabank.data.RequestLoanDataObject;
 import com.parasoft.parabank.data.TransferFundsDataObject;
 import com.parasoft.parabank.data.UserRegistrationDataObject;
 import com.parasoft.parabank.utility.Constants;
@@ -39,6 +40,9 @@ public class DataController {
             } else if (moduleName.equalsIgnoreCase("User_Registration")) {
                 UserRegistrationDataObject dataObject = getUserRegistrationData(recordset);
                 scenarioContext.set(DATA, (UserRegistrationDataObject)dataObject);
+            } else if (moduleName.equalsIgnoreCase("Request_Loan")) {
+                RequestLoanDataObject dataObject = getRequestLoanData(recordset);
+                scenarioContext.set(DATA, (RequestLoanDataObject)dataObject);
             } else {
                 LogController.error("Unknown module name: " + moduleName);
                 throw new FilloException("Unknown module name: " + moduleName);
@@ -79,6 +83,24 @@ public class DataController {
         object.AMOUNT = record.getField("AMOUNT");
         object.FROM_ACCOUNT = record.getField("FROM_ACCOUNT");
         object.TO_ACCOUNT = record.getField("TO_ACCOUNT");
+
+        return object;
+    }
+
+    /**
+     * Reads request loan data from the given Fillo Recordset and
+     * maps it to a RequestLoanDataObject.
+     *
+     * @param record Fillo record containing transfer fund test data
+     * @return populated RequestLoanDataObject
+     * @throws FilloException if reading from the record fails
+     */
+    private RequestLoanDataObject getRequestLoanData(Recordset record) throws FilloException {
+        RequestLoanDataObject object = new RequestLoanDataObject();
+        object.USER = record.getField("USER");
+        object.PASSWORD = record.getField("PASSWORD");
+        object.LOAN_AMOUNT = record.getField("LOAN_AMOUNT");
+        object.DOWN_PAYMENT = record.getField("DOWN_PAYMENT");
 
         return object;
     }
