@@ -94,6 +94,15 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M7</version>
+        <configuration>
+          <systemPropertyVariables>
+            <app.env>${app.env}</app.env>
+            <run.browser>${run.browser}</run.browser>
+            <enable.analytics>${enable.analytics}</enable.analytics>
+            <enable.grid>${enable.grid}</enable.grid>
+            <!-- <cucumber.filter.tags>${cucumber.filter.tags}</cucumber.filter.tags> -->
+          </systemPropertyVariables>
+        </configuration>
       </plugin>
     </plugins>
   </build>

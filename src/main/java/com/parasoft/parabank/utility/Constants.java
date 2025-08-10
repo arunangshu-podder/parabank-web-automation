@@ -3,9 +3,8 @@ package com.parasoft.parabank.utility;
 import static com.parasoft.parabank.controller.PropertiesController.Config;
 
 public class Constants {
-    public static final String BROWSER_TYPE = Config.getProperty("run.browser");
-    public static final String RUN_MODE = Config.getProperty("run.mode");
-    public static final String ENVIRONMENT = Config.getProperty("app.env");
+    public static final String BROWSER_TYPE = System.getProperty("run.browser", Config.getProperty("run.browser"));
+    public static final String ENVIRONMENT = System.getProperty("app.env", Config.getProperty("app.env"));
     public static final String APP_URL = Config.getProperty(String.format("app.%s.url", ENVIRONMENT.toLowerCase()));
 
     public static final String TEST_DATA_FILE_PATH = Config.getProperty("data.filePath");
@@ -18,8 +17,10 @@ public class Constants {
 
     public static final String RELEASE_VERSION = Config.getProperty("release.version");
 
-    public static boolean ANALYTICS_ENABLED = Boolean.parseBoolean(Config.getProperty("enable.analytics"));
+    public static boolean ANALYTICS_ENABLED = Boolean.parseBoolean(
+            System.getProperty("enable.analytics", Config.getProperty("enable.analytics")));
 
-    public static boolean GRID_ENABLED = Boolean.parseBoolean(Config.getProperty("enable.grid"));
+    public static boolean GRID_ENABLED = Boolean.parseBoolean(
+            System.getProperty("enable.grid", Config.getProperty("enable.grid")));
     public static String GRID_URL = Config.getProperty("grid.url");
 }
