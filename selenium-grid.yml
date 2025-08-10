@@ -1,0 +1,52 @@
+version: "3.8"
+
+networks:
+  grid:
+    driver: bridge
+
+services:
+  hub:
+    image: selenium/hub:latest
+    container_name: hub
+    networks:
+      - grid
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+
+  node-firefox:
+    image: selenium/node-firefox:latest
+    platform: linux/amd64
+    networks:
+      - grid
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_VNC_NO_PASSWORD=1
+      - SE_SESSION_TIMEOUT=180
+
+  node-edge:
+    image: selenium/node-edge:latest
+    platform: linux/amd64
+    networks:
+      - grid
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_VNC_NO_PASSWORD=1
+      - SE_SESSION_TIMEOUT=180
+
+  node-chrome:
+    image: selenium/node-chrome:latest
+    platform: linux/amd64
+    networks:
+      - grid
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_VNC_NO_PASSWORD=1
+      - SE_SESSION_TIMEOUT=180

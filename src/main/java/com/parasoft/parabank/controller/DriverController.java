@@ -1,12 +1,21 @@
 package com.parasoft.parabank.controller;
 
 import com.parasoft.parabank.utility.Constants;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Manages WebDriver instances per thread.
@@ -47,6 +56,10 @@ public class DriverController {
                 return getChromeDriver();
             } else if (browserType.equalsIgnoreCase("firefox")) {
                 return getFirefoxDriver();
+            } else if (browserType.equalsIgnoreCase("edge")) {
+                return getEdgeDriver();
+            } else if (browserType.equalsIgnoreCase("safari")) {
+                return getSafariDriver();
             } else {
                 throw new IllegalArgumentException("Unsupported browser type: " + browserType);
             }
@@ -63,7 +76,7 @@ public class DriverController {
         WebDriver driver = DRIVER.get();
         if (driver != null) {
             try {
-                driver.close();
+                driver.quit();
             } catch (Exception e) {
                 LogController.error("Error closing WebDriver: " + e.getMessage());
             } finally {
@@ -80,7 +93,11 @@ public class DriverController {
             ChromeOptions options = new ChromeOptions();
             options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
             options.addArguments("--incognito");
-            return new ChromeDriver(options);
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage"); // avoids /dev/shm issues in containers
+            options.addArguments("--disable-gpu");
+            return Constants.GRID_ENABLED ?
+                    getRemoteWebDriver(options) : new ChromeDriver(options);
         } catch (Exception e) {
             LogController.error("Failed to initialize ChromeDriver: " + e.getMessage());
             throw e;
@@ -95,10 +112,51 @@ public class DriverController {
             FirefoxOptions options = new FirefoxOptions();
             options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
             options.addArguments("--private");
-            return new FirefoxDriver(options);
+            return Constants.GRID_ENABLED ?
+                    getRemoteWebDriver(options) : new FirefoxDriver(options);
         } catch (Exception e) {
             LogController.error("Failed to initialize FirefoxDriver: " + e.getMessage());
             throw e;
         }
+    }
+
+    /**
+     * Edge browser options
+     */
+    private static WebDriver getEdgeDriver() {
+        try {
+            EdgeOptions options = new EdgeOptions();
+            options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+            options.addArguments("--inprivate");
+            return Constants.GRID_ENABLED ?
+                    getRemoteWebDriver(options) : new EdgeDriver(options);
+        } catch (Exception e) {
+            LogController.error("Failed to initialize EdgeDriver: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    /**
+     * Safari browser options
+     */
+    private static WebDriver getSafariDriver() {
+        try {
+            SafariOptions options = new SafariOptions();
+            options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+            return Constants.GRID_ENABLED ?
+                    getRemoteWebDriver(options) : new SafariDriver(options);
+        } catch (Exception e) {
+            LogController.error("Failed to initialize SafariDriver: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    private static WebDriver getRemoteWebDriver(MutableCapabilities options) {
+        try {
+            return new RemoteWebDriver(new URL(Constants.GRID_URL), options);
+        } catch (MalformedURLException e) {
+            LogController.error("Invalid URL for RemoteWebDriver: " + e.getMessage());
+        }
+        return null;
     }
 }

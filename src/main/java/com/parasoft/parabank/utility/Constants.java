@@ -19,4 +19,7 @@ public class Constants {
     public static final String RELEASE_VERSION = Config.getProperty("release.version");
 
     public static boolean ANALYTICS_ENABLED = Boolean.parseBoolean(Config.getProperty("enable.analytics"));
+
+    public static boolean GRID_ENABLED = Boolean.parseBoolean(Config.getProperty("enable.grid"));
+    public static String GRID_URL = Config.getProperty("grid.url");
 }
