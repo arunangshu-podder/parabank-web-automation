@@ -111,6 +111,53 @@ data.filePath=src/test/resources/testData/RegressionTests.xlsx
 - Test data is managed via the Excel file specified in `Config.properties`.
 - Add or modify test scenarios in the `src/test` directory.
 
+## Project Structure Diagram
+
+```
+parabank-web-automation/
+├── pom.xml
+├── README.md
+├── Config.properties (configuration for environment, browser, grid)
+├── AnalyticsDB.properties (db connection properties for analytics)
+├── selenium-grid.yml (for Docker Selenium Grid setup)
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       └── com/
+│   │           └── parasoft/
+│   │               └── parabank/
+│   │                   ├── commands/
+│   │                   │   └── ... (selenium commands using command design pattern)
+│   │                   ├── controller/
+│   │                   │   └── ... (driver, data, report classes)
+│   │                   ├── data/ 
+│   │                   │   └── ... (data object classes)
+│   │                   └── utility/
+│   │                   │   └── ... (helper classes)
+│   └── test/
+│       ├── java/
+│       │   └── com/
+│       │       └── parasoft/
+│       │           └── parabank/
+│       │               ├── testRunner/
+│       │               │   └── RunTest.java
+│       │               ├── glue/
+│       │               │   └── ... (step definition files)
+│       │               ├── pages/
+│       │               │   └── ... (pom classes)
+│       │               └── base/
+│       │                   └── ... (base test and base page classes)
+│       └── resources/
+│           ├── features/
+│           │   └── ... (feature files)
+│           ├── testData/
+│           │   └── ... (excel files for test data)
+│           └── junit-platform.properties (for parallel execution)
+│           └── log4j2.xml (for logging configuration)
+└── target/
+    └── ... (build output)
+```
+
 ## License
 
 This project is for demonstration and educational purposes.
