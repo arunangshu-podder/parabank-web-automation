@@ -10,7 +10,6 @@ import org.junit.platform.suite.api.Suite;
 @SelectDirectories("src/test/resources/features")
 @ConfigurationParameter(key = "cucumber.glue", value = "com.parasoft.parabank.base, com.parasoft.parabank.glue")
 @ConfigurationParameter(key = "cucumber.plugin", value = "pretty, html:target/cucumber-report.html")
-//@ConfigurationParameter(key = "cucumber.execution.parallel.enabled", value = "true")
 //@ConfigurationParameter(key = "cucumber.filter.tags", value = "@SanityTests")
 public class RunTest {
 
