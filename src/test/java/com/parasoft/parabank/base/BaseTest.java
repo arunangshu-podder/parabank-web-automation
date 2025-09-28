@@ -103,7 +103,7 @@ public class BaseTest {
         testController.setTestCaseName(scenario.getName());
         testController.setReleaseVersion(Constants.RELEASE_VERSION);
         testController.setEnvironment(Constants.ENVIRONMENT);
-        testController.setPlatform(Constants.BROWSER_TYPE);
+        testController.setPlatform(String.valueOf(Constants.BROWSER_TYPE));
         testController.setExecutionStartTime(new Timestamp(System.currentTimeMillis()));
 
         Set<String> tags = scenario.getSourceTagNames().stream()

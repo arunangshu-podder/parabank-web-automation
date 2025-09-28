@@ -1,5 +1,6 @@
 package com.parasoft.parabank.controller;
 
+import com.parasoft.parabank.utility.Browser;
 import com.parasoft.parabank.utility.Constants;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
@@ -50,18 +51,19 @@ public class DriverController {
      * @return new WebDriver instance
      * @throws IllegalArgumentException if browser type is not supported
      */
-    public static WebDriver getDriver(String browserType) {
+    public static WebDriver getDriver(Browser browserType) {
         try {
-            if (browserType.equalsIgnoreCase("chrome")) {
-                return getChromeDriver();
-            } else if (browserType.equalsIgnoreCase("firefox")) {
-                return getFirefoxDriver();
-            } else if (browserType.equalsIgnoreCase("edge")) {
-                return getEdgeDriver();
-            } else if (browserType.equalsIgnoreCase("safari")) {
-                return getSafariDriver();
-            } else {
-                throw new IllegalArgumentException("Unsupported browser type: " + browserType);
+            switch (browserType.toString().toLowerCase()) {
+                case "chrome":
+                    return getChromeDriver();
+                case "firefox":
+                    return getFirefoxDriver();
+                case "edge":
+                    return getEdgeDriver();
+                case "safari":
+                    return getSafariDriver();
+                default:
+                    throw new IllegalArgumentException("Unsupported browser type: " + browserType);
             }
         } catch (Exception e) {
             LogController.error("Error creating WebDriver for browser '" + browserType + "': " + e.getMessage());
